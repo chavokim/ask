@@ -14,13 +14,12 @@ export interface CommentDTO {
 export const useComments = (name: string) => useQuery<Comment[]>({
     queryKey: ["comments", name],
     queryFn: () => fetch(`/api/${name}`).then(res => res.json()),
+    refetchInterval: 1000,
 });
 
 export const useCommentMutation = (queryClient: QueryClient, name: string, parentId?: string) =>
     useMutation<unknown, typeof Error, CommentDTO>({
         mutationFn: (comment) => {
-            console.log(comment);
-
             return fetch(`/api/${name}`, {
                 method: 'POST',
                 body: JSON.stringify(comment),
